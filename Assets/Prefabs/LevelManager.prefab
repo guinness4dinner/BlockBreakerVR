@@ -56,13 +56,14 @@ MonoBehaviour:
   winCanvas: {fileID: 0}
   breakableBlocks: 0
   powerUpTypes:
-  - {fileID: 114990571077706802, guid: 9c434b39415af614490e2b61bff67fa8, type: 2}
-  - {fileID: 114469026742059378, guid: b2ac48d34ee9df042876ed3432e43e66, type: 2}
-  - {fileID: 114754657686745654, guid: 9a98fc709f8ef8f4986507f8ff61b3b4, type: 2}
-  - {fileID: 114955369711620156, guid: e7a237e4b27ab9d40a841d7153e27f85, type: 2}
-  - {fileID: 114139141625057282, guid: aa6792fc23328a4449735690d47bb75e, type: 2}
-  - {fileID: 114275870414438988, guid: a1963df9b5024c342989ef63f6920484, type: 2}
-  - {fileID: 114130944218901118, guid: a3ada78830333a94599ff6932e54fe42, type: 2}
-  - {fileID: 114683459134116048, guid: a0ac1adc1c100fc43ad809d97545d16e, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   pauseMenu: {fileID: 0}
   hasStarted: 0
+  winCanvasTimerLength: 5
