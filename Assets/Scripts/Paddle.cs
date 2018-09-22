@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Paddle : MonoBehaviour
 {
-
+    [SerializeField] Camera m_Camera;
+    [SerializeField] Transform m_TrackingSpace;
     [SerializeField] float screenWidthInUnits = 16f;
     [SerializeField] float screenHeightInUnits = 8.4f;
     [SerializeField] float paddleMinXClampNormal = -7.2f;
@@ -42,17 +43,86 @@ public class Paddle : MonoBehaviour
         Debug.Log(Screen.width);
     }
 
+
+    public bool ControllerIsConnected
+    {
+        get
+        {
+            OVRInput.Controller controller = OVRInput.GetConnectedControllers() & (OVRInput.Controller.LTrackedRemote | OVRInput.Controller.RTrackedRemote);
+            return controller == OVRInput.Controller.LTrackedRemote || controller == OVRInput.Controller.RTrackedRemote;
+        }
+    }
+    public OVRInput.Controller Controller
+    {
+        get
+        {
+            OVRInput.Controller controller = OVRInput.GetConnectedControllers();
+            if ((controller & OVRInput.Controller.LTrackedRemote) == OVRInput.Controller.LTrackedRemote)
+            {
+                return OVRInput.Controller.LTrackedRemote;
+            }
+            else if ((controller & OVRInput.Controller.RTrackedRemote) == OVRInput.Controller.RTrackedRemote)
+            {
+                return OVRInput.Controller.RTrackedRemote;
+            }
+            return OVRInput.GetActiveController();
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
+        int layerMask = 1 << 9;
         if (enableMovement)
         {
-            float mousePosInUnitsX = Input.mousePosition.x / Screen.width * screenWidthInUnits - 7.2f;
-            float mousePosInUnitsY = Input.mousePosition.y / Screen.height * screenHeightInUnits + 2.4f; 
-            Vector3 paddlePos = new Vector3(transform.position.x, transform.position.y, -6.5f);
-            paddlePos.x = Mathf.Clamp(mousePosInUnitsX, paddleMinXClamp, paddleMaxXClamp);
-            paddlePos.y = Mathf.Clamp(mousePosInUnitsY, paddleMinYClamp, paddleMaxYClamp);
-            transform.position = paddlePos;
+            //Check if Controller connected
+            if (ControllerIsConnected)
+            {
+                //use controller orientation to control paddle
+                Matrix4x4 localToWorld = m_TrackingSpace.localToWorldMatrix;
+                Quaternion controllerOrientation = OVRInput.GetLocalControllerRotation(Controller);
+                Vector3 localControllerPosition = OVRInput.GetLocalControllerPosition(Controller);
+                Vector3 worldControllerPosition = localToWorld.MultiplyPoint(localControllerPosition);
+
+                Ray ray = new Ray(worldControllerPosition, controllerOrientation * Vector3.forward);
+                RaycastHit hit;
+
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+                {
+                    Vector3 paddlePos = new Vector3(transform.position.x, transform.position.y, -6.5f);
+                    paddlePos.x = Mathf.Clamp(hit.point.x, paddleMinXClamp, paddleMaxXClamp);
+                    paddlePos.y = Mathf.Clamp(hit.point.y, paddleMinYClamp, paddleMaxYClamp);
+                    transform.position = paddlePos;
+                }
+            }
+            //Else Check if HMD connected
+            else if (OVRManager.isHmdPresent)
+            {
+
+                //use gaze to control paddle
+                Ray ray = new Ray(m_Camera.transform.position, m_Camera.transform.forward);
+                RaycastHit hit;
+
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+                {
+                    Vector3 paddlePos = new Vector3(transform.position.x, transform.position.y, -6.5f);
+                    paddlePos.x = Mathf.Clamp(hit.point.x, paddleMinXClamp, paddleMaxXClamp);
+                    paddlePos.y = Mathf.Clamp(hit.point.y, paddleMinYClamp, paddleMaxYClamp);
+                    transform.position = paddlePos;
+                }
+            }
+            //If no controller or HMD connected, use mouse to control paddle
+            else
+            {
+                //Mouse Controls
+                float mousePosInUnitsX = Input.mousePosition.x / Screen.width * screenWidthInUnits - 7.2f;
+                float mousePosInUnitsY = Input.mousePosition.y / Screen.height * screenHeightInUnits + 2.4f;
+                Vector3 paddlePos = new Vector3(transform.position.x, transform.position.y, -6.5f);
+                paddlePos.x = Mathf.Clamp(mousePosInUnitsX, paddleMinXClamp, paddleMaxXClamp);
+                paddlePos.y = Mathf.Clamp(mousePosInUnitsY, paddleMinYClamp, paddleMaxYClamp);
+                transform.position = paddlePos;
+            }
+           
         }
 
         if (enableMissile)

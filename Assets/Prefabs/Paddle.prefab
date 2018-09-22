@@ -110,6 +110,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e798f8a27c7a1d48b36b2edb1a3ab0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Camera: {fileID: 0}
+  m_TrackingSpace: {fileID: 0}
   screenWidthInUnits: 16
   screenHeightInUnits: 8.4
   paddleMinXClampNormal: -5.5

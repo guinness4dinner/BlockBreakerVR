@@ -367,7 +367,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a38e98c6f53d19147abe20b4956082ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lives: 3
+  lives: 50
   defaultGameSpeed: 1
   pointsPerBlockBreak: 72
   currentScore: 0
@@ -396,9 +396,9 @@ Canvas:
   m_GameObject: {fileID: 1954428684342494}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 2
   m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
+  m_PlaneDistance: 3.6
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -451,8 +451,8 @@ RectTransform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1954428684342494}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -9.223898}
+  m_LocalScale: {x: 0.0066666664, y: 0.0066666664, z: 0.0066666664}
   m_Children:
   - {fileID: 224137260035598734}
   - {fileID: 224250639425262114}
@@ -461,6 +461,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -571.6691, y: -657.2716}
+  m_SizeDelta: {x: 2645.296, y: 1080}
+  m_Pivot: {x: 0.5, y: 0.5}
