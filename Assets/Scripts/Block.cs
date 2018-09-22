@@ -40,7 +40,7 @@ public class Block : MonoBehaviour {
     {
         gameSession.IncreaseScore();
         levelManager.BlockDestoyed();
-        RollForPowerUp(blockBroken.Length);
+        //RollForPowerUp(blockBroken.Length);
         Destroy(gameObject);
     }
 

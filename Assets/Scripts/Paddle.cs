@@ -48,7 +48,7 @@ public class Paddle : MonoBehaviour
         if (enableMovement)
         {
             float mousePosInUnitsX = Input.mousePosition.x / Screen.width * screenWidthInUnits - 7.2f;
-            float mousePosInUnitsY = Input.mousePosition.y / Screen.height * screenHeightInUnits + 4.4f; 
+            float mousePosInUnitsY = Input.mousePosition.y / Screen.height * screenHeightInUnits + 2.4f; 
             Vector3 paddlePos = new Vector3(transform.position.x, transform.position.y, -6.5f);
             paddlePos.x = Mathf.Clamp(mousePosInUnitsX, paddleMinXClamp, paddleMaxXClamp);
             paddlePos.y = Mathf.Clamp(mousePosInUnitsY, paddleMinYClamp, paddleMaxYClamp);
