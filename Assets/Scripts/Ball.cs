@@ -15,6 +15,8 @@ public class Ball : MonoBehaviour {
     [SerializeField] float xPush = 5f;
     [SerializeField] float yPush = 2f;
     [SerializeField] float zPush = 15f;
+    [SerializeField] float randomPushRangeMax = 0.7f;
+    [SerializeField] float randomPushRangeMin = 0.3f;
 
     //state
     Vector3 ballStartPos;
@@ -23,12 +25,14 @@ public class Ball : MonoBehaviour {
     //Component References
     AudioSource ballAudioSource;
     LevelManager levelManager;
+    Rigidbody rigidBody;
 
 	// Use this for initialization
 	void Start ()
     {
         levelManager = FindObjectOfType<LevelManager>();
         ballAudioSource = GetComponent<AudioSource>();
+        rigidBody = GetComponent<Rigidbody>();
         MoveBallToPaddle();
     }
 
@@ -54,7 +58,7 @@ public class Ball : MonoBehaviour {
        if (Input.GetMouseButtonDown(0)) //&& gameManager.gameSpeed > 0f)
        {
             levelManager.hasStarted = true;
-            GetComponent<Rigidbody>().velocity = new Vector3(xPush, yPush, zPush); 
+            rigidBody.velocity = new Vector3(xPush, yPush, zPush); 
        }
     }
 
@@ -74,6 +78,43 @@ public class Ball : MonoBehaviour {
         {
             ballAudioSource.PlayOneShot(blockHitSound);
         }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        var velocity = rigidBody.velocity;
+
+        if (velocity.z < 1f && velocity.z > -1f && transform.position.z > -3f)
+        {
+            if (velocity.z > 0f)
+            {
+                Debug.Log("Nudged Foward " + velocity.z);
+                Nudge(Vector3.forward, randomPushRangeMin, randomPushRangeMax);
+            }
+            else
+            {
+                Debug.Log("Nudged Back" + velocity.z);
+                Nudge(Vector3.back, randomPushRangeMin, randomPushRangeMax);
+            }
+        }
+
+        if (velocity.y < 0.05f && velocity.y > -0.05f)
+        {
+            if (transform.position.y < 6f)
+            {
+                Nudge(Vector3.up, randomPushRangeMin, randomPushRangeMax);
+            }
+            else if (transform.position.y > 10.5f)
+            {
+                Nudge(Vector3.down, randomPushRangeMin, randomPushRangeMax);
+            }
+        }
+
+    }
+
+    private void Nudge(Vector3 direction, float RangeMin, float RangeMax)
+    {       
+        rigidBody.AddForce(direction * UnityEngine.Random.Range(RangeMin, RangeMax), ForceMode.Impulse); 
     }
 
 }

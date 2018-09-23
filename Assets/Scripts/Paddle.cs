@@ -40,7 +40,6 @@ public class Paddle : MonoBehaviour
         paddleMaxXClamp = paddleMaxXClampNormal;
         paddleMinYClamp = paddleMinYClampNormal;
         paddleMaxYClamp = paddleMaxYClampNormal;
-        Debug.Log(Screen.width);
     }
 
 
